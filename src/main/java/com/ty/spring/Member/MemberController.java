@@ -35,9 +35,17 @@ public class MemberController {
     @PostMapping("/member")
     public void createMember(@RequestBody MemberVO memberVO){
 
-//        Long result = memberService.insertMember(memberVO);
+        memberService.insertMember(memberVO);
         System.err.println("memberVO : "+ memberVO);
+    }
+
+    @PutMapping("/member/{id}")
+    public void updateMember(@RequestBody MemberVO memberVO, @PathVariable Long id) throws Exception {
+
+        System.err.println("memberVO : "+ memberVO);
+        memberService.updateMember(memberVO,id);
 
     }
+
 
 }

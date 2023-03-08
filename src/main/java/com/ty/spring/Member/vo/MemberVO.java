@@ -19,4 +19,12 @@ public class MemberVO {
     private String gender;
     private String deptCd;
 
+    public MemberEntity toEntity(){
+        return MemberEntity.builder()
+                .memberNm(memberNm)
+                .gender(gender)
+                .deptCd(deptCd)
+                .build();
+    }
+
 }
