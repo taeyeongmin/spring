@@ -43,7 +43,7 @@ public class MemberController {
     public void updateMember(@RequestBody MemberVO memberVO, @PathVariable Long id) throws Exception {
 
         System.err.println("memberVO : "+ memberVO);
-        memberService.updateMember(memberVO,id);
+        memberService.updateMember2(memberVO,id);
 
     }
 

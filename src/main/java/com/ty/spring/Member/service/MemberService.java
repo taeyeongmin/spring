@@ -5,6 +5,7 @@ import com.ty.spring.Member.repository.MemberRepo;
 import com.ty.spring.Member.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
 import java.util.List;
@@ -57,12 +58,37 @@ public class MemberService {
 
             //좋은 방법은 아니지만 일단 setter사용
             findEntity.setDeptCd(memberVO.getDeptCd());
-            memberRepo.save(findEntity);
+            memberRepo.save(MemberEntity.builder().build());
         }else{
             throw new Exception();
         }
 
-//        MemberEntity entity = memberVO.toEntity();
-//        memberRepo.save(entity);
+        MemberEntity entity = memberVO.toEntity();
+        memberRepo.save(entity);
+    }
+
+    /**
+     * 해당 코드에서 findById를 통해 영속성 객체(Entity)를 가져온 뒤
+     * 해당 Entity에서 set을 하기만 해도 @Transactional을 보고
+     * 자동으로 update문을 실행한다. -> Entity의 setter를 주의해야 하는 이유.
+     *
+     *
+     * @param memberVO
+     * @param id
+     * @throws Exception
+     */
+    @Transactional
+    public void updateMember2(MemberVO memberVO, Long id) throws Exception {
+
+        Optional<MemberEntity> optional = memberRepo.findById(3L);
+        MemberEntity findMember = optional.get();
+        System.err.println("findMember : "+findMember);
+
+        /** 해당 행위가 @Transactional과 만나 자동으로 update쿼리 실행 */
+        findMember.setDeptCd(memberVO.getDeptCd());
+
+        Optional<MemberEntity> optional2 = memberRepo.findById(3L);
+        MemberEntity findMemberUpdate = optional2.get();
+        System.err.println("findMemberUpdate : "+findMemberUpdate);
     }
 }
